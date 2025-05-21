@@ -529,11 +529,16 @@ fn digits_to_a(sign: bool, mut digits: Vec<u8>, mut e: i32, config: FmtFloatConf
             as_str.push('0');
         }
     }
-    for digit in digits {
+    for (i, digit) in digits.iter().enumerate() {
         if e > 0 && curr == e {
             as_str.push(config.radix_point);
         }
-        as_str.push(digit as char);
+        if let Some((group_size, separator)) = config.group_digits {
+            if (digits.len() - i) % usize::from(group_size) == 0 {
+                as_str.push(separator);
+            }
+        }
+        as_str.push(*digit as char);
         curr += 1;
     }
     let is_integer = curr <= e;
@@ -921,7 +926,8 @@ mod tests {
             .upper_e_break(10)
             .add_point_zero(false)
             .group_digits(3, ' ');
-        assert_eq!(dtoa(10000.0, config), "10 000");
+        assert_eq!(dtoa(12345678.0, config), "12 345 678");
+        assert_eq!(dtoa(1234567.0, config), "1 234 567");
     }
 
 }

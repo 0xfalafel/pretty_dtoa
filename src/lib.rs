@@ -914,4 +914,14 @@ mod tests {
 
         assert_eq!(dtoa(0., config), "0");
     }
+
+    #[test]
+    fn test_group_digits() {
+        let config = FmtFloatConfig::default()
+            .upper_e_break(10)
+            .add_point_zero(false)
+            .group_digits(3, ' ');
+        assert_eq!(dtoa(10000.0, config), "10 000");
+    }
+
 }

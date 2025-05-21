@@ -62,7 +62,7 @@ mod __rt {
             let value_on_exit = self.mark.load(Ordering::Relaxed);
             assert!(
                 value_on_exit > self.value_on_entry,
-                format!("mark was not hit: {}", self.name)
+                "mark was not hit: {}", self.name
             )
         }
     }

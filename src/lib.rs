@@ -25,7 +25,6 @@ macro_rules! hit {
 macro_rules! hit {
     ($ident:ident) => {{
         extern "C" {
-            #[no_mangle]
             static $ident: $crate::__rt::AtomicUsize;
         }
         unsafe {

@@ -537,7 +537,8 @@ fn digits_to_a(sign: bool, mut digits: Vec<u8>, mut e: i32, config: FmtFloatConf
         if let Some((group_size, separator)) = config.group_digits {
             
             if (e - curr) % i32::from(group_size) == 0 // we are on the group separator
-            && curr != 0 // don't add a separator at the start
+            && curr != 0 // don't add a separator at the start of the number
+            && curr != e // or just after the radix point
             && e > 0 // group_digits is only for positive numbers
             {
                 as_str.push(separator);
@@ -550,10 +551,8 @@ fn digits_to_a(sign: bool, mut digits: Vec<u8>, mut e: i32, config: FmtFloatConf
     while e > 0 && curr < e {
         // add the separator between groups of digits if configured
         if let Some((group_size, separator)) = config.group_digits {
-            println!("e: {}, curr: {}", e, curr);
-            if (e - curr) % i32::from(group_size) == 0 // we are on the group separator
-            && curr != 0 // don't add a separator at the start
-            {
+            // we are on the group separator
+            if (e - curr) % i32::from(group_size) == 0 {
                 as_str.push(separator);
             }
         }

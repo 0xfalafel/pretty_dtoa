@@ -129,6 +129,9 @@ pub struct FmtFloatConfig {
     pub max_width: Option<u8>,
     /// The seperator between the integer and non-integer part
     pub radix_point: char,
+    /// Group digits together, and separate them with `char`
+    /// .i.e: With Some(3,' '): 10000 -> 10 000
+    pub group_digits: Option<(u8, char)>,
 }
 
 impl FmtFloatConfig {
@@ -151,6 +154,7 @@ impl FmtFloatConfig {
             add_point_zero: true,
             max_width: None,
             radix_point: '.',
+            group_digits: None,
         }
     }
 

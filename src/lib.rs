@@ -279,6 +279,16 @@ impl FmtFloatConfig {
         self.radix_point = val;
         self
     }
+
+    /// Group digits together in groups of `group_by` digits,
+    /// and separate them with `separator`
+    /// .i.e: with Some(3,' ')
+    /// 10000 -> 10 000
+    pub const fn group_digits(mut self, group_by: u8, separator: char) -> Self {
+        self.group_digits = Some((group_by, separator));
+        self
+    }
+    
 }
 
 const fn digit_to_u8(val: u8) -> u8 {

@@ -402,13 +402,13 @@ fn digits_to_a(sign: bool, mut digits: Vec<u8>, mut e: i32, config: FmtFloatConf
         let max_width = if sign { max_width - 1 } else { max_width };
         // Is it impossible to represent the value without e notation?
         if e > 0 && e + if config.add_point_zero { 2 } else { 0 } > max_width as i32 {
-            hit!(e_width_case_a);
+            hit!(E_WIDTH_CASE_A);
             use_e_notation = true;
         } else if -e + 3 > max_width as i32 {
-            hit!(e_width_case_b);
+            hit!(E_WIDTH_CASE_B);
             use_e_notation = true;
         } else if !use_e_notation {
-            hit!(e_width_case_c);
+            hit!(E_WIDTH_CASE_C);
             // Otherwise, prepare to not use e notation
             let is_integer = e > digits.len() as i32;
             let extra_length = if config.add_point_zero && is_integer {
@@ -628,7 +628,7 @@ mod tests {
 
     #[test]
     fn test_widths() {
-        check!(test_widths_internal);
+        check!(TEST_WIDTHS_INTERNAL);
         // Test random floats with several configurations, and
         // make sure that .max_width(_) does its job
         let mut rng = rand::thread_rng();
@@ -660,7 +660,7 @@ mod tests {
                 );
                 if as_string.chars().nth(0) == Some('#') {
                     assert!(width <= 6, "Found example of a too-wide float: {}", val);
-                    hit!(test_widths_internal);
+                    hit!(TEST_WIDTHS_INTERNAL);
                 }
             }
         }
@@ -857,9 +857,9 @@ mod tests {
 
     #[test]
     fn test_max_width_specifics() {
-        check!(e_width_case_a);
-        check!(e_width_case_b);
-        check!(e_width_case_c);
+        check!(E_WIDTH_CASE_A);
+        check!(E_WIDTH_CASE_B);
+        check!(E_WIDTH_CASE_C);
         let config = FmtFloatConfig::default().max_width(6).force_no_e_notation();
         assert_eq!(dtoa(123.4533, config), "123.45");
         assert_eq!(dtoa(0.00324, config), "0.0032");

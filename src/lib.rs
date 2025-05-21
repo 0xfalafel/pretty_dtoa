@@ -538,7 +538,7 @@ fn digits_to_a(sign: bool, mut digits: Vec<u8>, mut e: i32, config: FmtFloatConf
             
             if (e - curr) % i32::from(group_size) == 0 // we are on the group separator
             && curr != 0 // don't add a separator at the start of the number
-            && curr != e // or just after the radix point
+            && curr < e // or just after the radix point
             && e > 0 // group_digits is only for positive numbers
             {
                 as_str.push(separator);
@@ -938,14 +938,17 @@ mod tests {
     fn test_group_digits() {
         let config = FmtFloatConfig::default()
             .upper_e_break(10)
+            .lower_e_break(-10)
             .add_point_zero(false)
             .group_digits(3, ' ');
         assert_eq!(dtoa(12345678.0, config), "12 345 678");
         assert_eq!(dtoa(1234567.0, config), "1 234 567");
         assert_eq!(dtoa(123456.0, config), "123 456");
         assert_eq!(dtoa(100000.0, config), "100 000");
+        assert_eq!(dtoa(0.00000001, config), "0.00000001");
         assert_eq!(dtoa(0.1234568, config), "0.1234568");
         assert_eq!(dtoa(12345.68, config), "12 345.68");
+        assert_eq!(dtoa(12.345689, config), "12.345689");
     }
 
 }
